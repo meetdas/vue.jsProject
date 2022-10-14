@@ -1,0 +1,21 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "5ea8828a-484d-4d5f-8b6e-aa6b006ed75d": {
+      "ProjectGuid": "5ea8828a-484d-4d5f-8b6e-aa6b006ed75d",
+      "DisplayName": "fitnessManagementSystem.App",
+      "ColorIndex": 0
+    },
+    "b72e4961-afb0-4fea-a48c-76226c4ce11c": {
+      "ProjectGuid": "b72e4961-afb0-4fea-a48c-76226c4ce11c",
+      "DisplayName": "fitnessManagementSystem.Services",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 2
+}
