@@ -15,10 +15,16 @@ namespace fitnessManagementSystem.App.Areas.Customer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
             var data =await _service.Search();
-            return View(data);
+            return Json(AppConstants.Success(data));
         }
 
         [HttpGet]
@@ -27,16 +33,17 @@ namespace fitnessManagementSystem.App.Areas.Customer.Controllers
             return View();
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(BranchDto model)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody] BranchDto model)
         {
             var result = string.Empty;
             if (ModelState.IsValid)
             {
                 result  = await _service.Add(model);
-                return RedirectToAction(nameof(Index));
-            }      
-            return View(model);
+                Json(AppConstants.SaveSuccess());
+            }
+  
+            return Json(AppConstants.Error());
         }
 
         [HttpGet]
@@ -47,18 +54,18 @@ namespace fitnessManagementSystem.App.Areas.Customer.Controllers
             var model = await _service.Details(id);
             if(model == null)
                 return NotFound();
-            return View(model);
+            return Json(AppConstants.Success(model));
         }
 
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost]
         public async Task<IActionResult>Update(Branch model)
         {
             var msg = string.Empty;
             if (model != null)
             {
              msg=  await _service.Update(model);
-             ViewBag.msg = msg;
-                return RedirectToAction(nameof(Index));
+
+                return Json(AppConstants.UpdateSuccess(model, msg));
             }
             return View(model);
         }
@@ -81,8 +88,8 @@ namespace fitnessManagementSystem.App.Areas.Customer.Controllers
                 return NotFound();
             var model= await _service.Details(id);
             if(model!=null)
-                return View(model);
-            return NotFound();
+                return Json(AppConstants.Success(model));
+            return Json(AppConstants.Error(new { }, AppConstants.DataNotFoundMessage));
         }
 
 
@@ -93,10 +100,9 @@ namespace fitnessManagementSystem.App.Areas.Customer.Controllers
             msg= await _service.Delete(id, model);
             if(msg != string.Empty)
             {
-            ViewBag.msg=msg;
-            return RedirectToAction(nameof(Index));
+                return Json(AppConstants.DeleteSuccess(model, msg));
             }
-            return NotFound();
+            return Json(AppConstants.Error(model, AppConstants.DataNotFoundMessage));
         }
        
     }

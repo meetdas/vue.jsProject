@@ -1,47 +1,74 @@
 ﻿@using fitnessManagementSystem.App.Models;
-@model IEnumerable<Branch>
 
 
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    ViewData["Title"] = "Index";
-}
-<br />
-<br />
-<div class="row">
-    <div class="col-10">
-        <h3 class="text text-info">BRANCHES</h3>
+<div id="app2">
+    <div class="row">
+        <div class="col-12">
+            <div class="col-auto mr-auto">
+                <a asp-action="Add" class="btn btn-info">
+                    Add new branch
+                    <i class="fa-sharp fa-solid fa-circle-plus mr-2"></i>
+                </a>
+            </div>
+        </div>
     </div>
-
-    <div class="col-2 text-right">
-        <a asp-action="Add" class="btn btn-info" ><i class="fa-sharp fa-solid fa-circle-plus"></i>&nbsp;&nbsp;&nbspAdd New Branch &nbsp;&nbsp&nbsp;</a>
-    </div> 
-</div>
-<br />
-<div>
-    <table class="table table-striped border">
-         <thead>
-        <tr class="table-info">
-                <th class="row-cols-6">
-                    @Html.DisplayNameFor(c=>c.Name)
-                </th>
-                <th></th>
-                <th></th>
-        </tr>
-         </thead>
-
-        <tbody>
-            @foreach(var item in Model)
-            {
+    <div class="row mt-2">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>@item.Name</td>
-                    <td><partial name="_ButtonPartial" model="@item.Id"> </td>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Action</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <tr v-for="(v, vIndex) in category.data">
+                    <th scope="row">{{vIndex + 1}}</th>
+                    <th>{{v.name}}</th>
+                    <th>
+                        <a href="" class="mr-2 ml-2">Edit</a>
+                        <a href="">Delete</a>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+<script>
+
+    let app = new Vue({
+        el: '#app2',
+      data: {
+          category: {
+              data:[]
+            }
+         },
+         mounted: function () {
+            this.GetAll();
+        },
+        computed: {},
+        methods: {
+            GetAll: function () {
+            var self =  this;
+            $.ajax({
+                type: 'GET',
+                url: "/Admin/Branch/GetAll",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                   self.category.data =  response.data;
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }// methods end
+      }
+    })
+</script>
 
 
